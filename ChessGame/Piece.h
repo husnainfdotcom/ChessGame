@@ -1,19 +1,25 @@
-#ifndef PIECE_H
-#define PIECE_H
+#pragma once
 
-class Piece {
+class Piece
+{
 protected:
-    char color;
-    char symbol;
+	bool isWhite;
+	char symbol;
 public:
-    Piece(char c, char s) {
-        color = c;
-        symbol = s;
-    }
-    virtual ~Piece() {}
-
-    // Pure virtual function: This forces you to write this function in every child class.
-    virtual bool isValidMove(int startX, int startY, int endX, int endY) = 0;
+	Piece(bool white, char sym)
+	{
+		isWhite = white;
+		symbol = sym;
+	}
+	virtual ~Piece()
+	{}
+	bool getIsWhite()
+	{
+		return isWhite;
+	}
+	char getSymbol()
+	{
+		return symbol;
+	}
+	virtual bool isValidMove(int startX, int startY, int endX, int endY, Piece* board[8][8]) = 0;
 };
-
-#endif
