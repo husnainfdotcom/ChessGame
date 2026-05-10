@@ -1,12 +1,11 @@
-#pragma once // Naya tareeqa jisse file bar bar copy nahi hoti
-#include "Piece.h" // Parent class ko include karna zaroori hai
+#pragma once 
+#include "Piece.h" 
 
-// Rook class Piece class se properties inherit kar rahi hai
 class Rook : public Piece {
 public:
     // Constructor (Color receive karne ke lie)
-    Rook(char c);
+    Rook(bool isWhite);
 
     // Movement rule jo hum parent class se override kar rahe hain
-    bool isValidMove(int startX, int startY, int endX, int endY) override;
+    bool isValidMove(int startX, int startY, int endX, int endY, Piece* board[8][8]) override;
 };
