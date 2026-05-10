@@ -3,6 +3,6 @@
 
 class Pawn :public Piece {
 public:
-	Pawn(char c);
-	bool isValidMove(int startX, int startY, int endX, int endY)override; 
+	Pawn(bool isWhite);
+	bool isValidMove(int startX, int startY, int endX, int endY, Piece* board[8][8])override;
 };
