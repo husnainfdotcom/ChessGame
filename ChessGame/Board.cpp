@@ -6,6 +6,8 @@
 #include "Queen.h"
 #include "King.h"
 #include "Pawn.h"
+#include "GameRules.h" // Added Member 3's rules
+
 using namespace std;
 
 //initialize empty board
@@ -32,7 +34,7 @@ Board::Board()
 	{
 		grid[1][i] = new Pawn(false);
 	}
-	
+
 	for (int i = 0; i < 8; i++)
 	{
 		grid[6][i] = new Pawn(true);
@@ -45,7 +47,6 @@ Board::Board()
 	grid[7][5] = new Bishop(true);
 	grid[7][6] = new Knight(true);
 	grid[7][7] = new Rook(true);
-}
 }
 
 //cleanup memory
@@ -85,7 +86,7 @@ void Board::displayBoard()
 	}
 }
 
-//basic move logic before member 3 integration
+//final move logic with member 3 integration
 bool Board::movePiece(int startX, int startY, int endX, int endY, bool isWhiteTurn)
 {
 	if (grid[startY][startX] == nullptr)
@@ -102,16 +103,28 @@ bool Board::movePiece(int startX, int startY, int endX, int endY, bool isWhiteTu
 	// Ask Member 2 if the math/geometry is valid
 	if (grid[startY][startX]->isValidMove(startX, startY, endX, endY, grid))
 	{
-		// Basic capture before Member 3's advanced logic
-		if (grid[endY][endX] != nullptr)
+		// Ask Member 3 if the path is blocked (Knights 'N' are allowed to jump over pieces)
+		char pieceSymbol = grid[startY][startX]->getSymbol();
+		if (pieceSymbol != 'N')
 		{
-			delete grid[endY][endX];
+			if (!GameRules::isPathClear(startX, startY, endX, endY, grid))
+			{
+				cout << "path is blocked by another piece" << endl;
+				return false;
+			}
 		}
 
-		grid[endY][endX] = grid[startY][startX];
-		grid[startY][startX] = nullptr;
+		// Ask Member 3 to execute the move and check if a King was killed
+		bool isCheckmate = GameRules::executeMoveAndCheckWin(startX, startY, endX, endY, grid);
+
+		if (isCheckmate)
+		{
+			exit(0);
+		}
+
 		return true;
 	}
 
 	cout << "invalid move" << endl;
 	return false;
+}
