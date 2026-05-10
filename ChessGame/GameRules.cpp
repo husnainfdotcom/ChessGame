@@ -1,4 +1,5 @@
 #include "GameRules.h"
+#include "Piece.h" // Required so the compiler knows what a Piece is
 #include <iostream>
 
 // Implementation of path checking for sliding pieces
@@ -13,7 +14,8 @@ bool GameRules::isPathClear(int startX, int startY, int endX, int endY, Piece* b
     int currY = startY + stepY;
 
     while (currX != endX || currY != endY) {
-        if (board[currX][currY] != nullptr) {
+        // FIXED: Swapped to [currY][currX] to match 2D array memory logic
+        if (board[currY][currX] != nullptr) {
             return false;
         }
         currX += stepX;
@@ -33,7 +35,8 @@ bool GameRules::isKingInCheck(int kingX, int kingY, char kingColor, Piece* board
 
 // Updated execution logic with a console notification for captures
 bool GameRules::executeMoveAndCheckWin(int startX, int startY, int endX, int endY, Piece* board[8][8]) {
-    Piece* targetSquare = board[endX][endY];
+    // FIXED: Swapped X and Y for the 2D array target square
+    Piece* targetSquare = board[endY][endX];
     bool gameOver = false;
 
     if (targetSquare != nullptr) {
@@ -47,8 +50,9 @@ bool GameRules::executeMoveAndCheckWin(int startX, int startY, int endX, int end
         delete targetSquare;
     }
 
-    board[endX][endY] = board[startX][startY];
-    board[startX][startY] = nullptr;
+    // FIXED: Swapped X and Y for the move execution
+    board[endY][endX] = board[startY][startX];
+    board[startY][startX] = nullptr;
 
     return gameOver;
 }
