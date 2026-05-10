@@ -2,7 +2,7 @@
 #include "Piece.h"
 class Bishop :public Piece {
 public:
-	Bishop(char c);
+	Bishop(bool isWhite);
 
-	bool isValidMove(int startX, int startY, int endX, int endY)override;
+	bool isValidMove(int startX, int startY, int endX, int endY, Piece* board[8][8])override;
 };

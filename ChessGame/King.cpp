@@ -1,15 +1,23 @@
-#include"King.h"
-#include<cmath>
+#include "King.h"
+#include <cmath>
+using namespace std;
 
-King::King(char c) :Piece(c, 'K') {};
+King::King(bool isWhite) : Piece(isWhite, 'K')
+{
+}
 
-bool King::isValidMove(int startX, int startY, int endX, int endY) {
-	if (startX == endX && startY == endY) {
+bool King::isValidMove(int startX, int startY, int endX, int endY, Piece* board[8][8])
+{
+	if (startX == endX && startY == endY)
+	{
 		return false;
 	}
+
 	int xdiff = abs(startX - endX);
 	int ydiff = abs(startY - endY);
-	if (xdiff <= 1 &&ydiff <= 1) {
+
+	if (xdiff <= 1 && ydiff <= 1)
+	{
 		return true;
 	}
 	return false;
