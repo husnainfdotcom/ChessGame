@@ -105,7 +105,7 @@ bool Board::movePiece(int startX, int startY, int endX, int endY, bool isWhiteTu
 	{
 		// Ask Member 3 if the path is blocked (Knights 'N' are allowed to jump over pieces)
 		char pieceSymbol = grid[startY][startX]->getSymbol();
-		if (pieceSymbol != 'N')
+		if (pieceSymbol != 'N' && pieceSymbol != 'n')
 		{
 			if (!GameRules::isPathClear(startX, startY, endX, endY, grid))
 			{
@@ -114,11 +114,41 @@ bool Board::movePiece(int startX, int startY, int endX, int endY, bool isWhiteTu
 			}
 		}
 
-		// Ask Member 3 to execute the move and check if a King was killed
+		// --- NEW: Escape Ludo Logic (Validate King Safety) ---
+		// We temporarily simulate the move to see if it leaves our King in check
+		Piece* tempTarget = grid[endY][endX];
+		grid[endY][endX] = grid[startY][startX];
+		grid[startY][startX] = nullptr;
+
+		// Find current King position to check safety
+		int kX = -1, kY = -1;
+		for (int y = 0; y < 8; y++) {
+			for (int x = 0; x < 8; x++) {
+				if (grid[y][x] != nullptr && grid[y][x]->getIsWhite() == isWhiteTurn) {
+					char s = grid[y][x]->getSymbol();
+					if (s == 'K' || s == 'k') { kX = x; kY = y; }
+				}
+			}
+		}
+
+		bool safetyCheck = GameRules::isKingInCheck(kX, kY, isWhiteTurn, grid);
+
+		// Undo simulation
+		grid[startY][startX] = grid[endY][endX];
+		grid[endY][endX] = tempTarget;
+
+		if (safetyCheck) {
+			cout << "Invalid move: You cannot leave your King in Check!" << endl;
+			return false;
+		}
+		// --- End of Safety Validation ---
+
+		// Ask Member 3 to execute the move and check if a True Checkmate occurred
 		bool isCheckmate = GameRules::executeMoveAndCheckWin(startX, startY, endX, endY, grid);
 
 		if (isCheckmate)
 		{
+			displayBoard(); // Show final board state
 			exit(0);
 		}
 
