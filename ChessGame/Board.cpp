@@ -152,6 +152,46 @@ bool Board::movePiece(int startX, int startY, int endX, int endY, bool isWhiteTu
 			exit(0);
 		}
 
+		// --- NEW: Member 2's Pawn Promotion Logic ---
+		char movedPieceSymbol = grid[endY][endX]->getSymbol();
+		if (movedPieceSymbol == 'P' || movedPieceSymbol == 'p')
+		{
+			// Check if it reached the last row (0 for White moving up, 7 for Black moving down)
+			if (endY == 0 || endY == 7)
+			{
+				char promotionChoice;
+				cout << "Pawn Promoted! Choose a piece (Q for Queen, R for Rook, B for Bishop, N for Knight): ";
+				cin >> promotionChoice;
+
+				// Get the color before we delete the pawn
+				bool isWhitePawn = grid[endY][endX]->getIsWhite();
+
+				// Delete the old pawn from memory
+				delete grid[endY][endX];
+
+				// Place the new piece based on user choice
+				if (promotionChoice == 'Q' || promotionChoice == 'q') {
+					grid[endY][endX] = new Queen(isWhitePawn);
+				}
+				else if (promotionChoice == 'R' || promotionChoice == 'r') {
+					grid[endY][endX] = new Rook(isWhitePawn);
+				}
+				else if (promotionChoice == 'B' || promotionChoice == 'b') {
+					grid[endY][endX] = new Bishop(isWhitePawn);
+				}
+				else if (promotionChoice == 'N' || promotionChoice == 'n') {
+					grid[endY][endX] = new Knight(isWhitePawn);
+				}
+				else {
+					// Default to Queen if they type something invalid
+					grid[endY][endX] = new Queen(isWhitePawn);
+				}
+
+				cout << "Promotion successful!" << endl;
+			}
+		}
+		// --- End of Promotion Logic ---
+
 		return true;
 	}
 
