@@ -33,12 +33,10 @@ Board::Board()
 		grid[1][i] = new Pawn(false);
 	}
 	
-	//White Pieces (true)
 	for (int i = 0; i < 8; i++)
 	{
 		grid[6][i] = new Pawn(true);
 	}
-
 	grid[7][0] = new Rook(true);
 	grid[7][1] = new Knight(true);
 	grid[7][2] = new Bishop(true);
