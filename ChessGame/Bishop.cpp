@@ -1,16 +1,16 @@
 #include "Bishop.h"
 #include <cmath>
 
-Bishop::Bishop(char c) :Piece(c, 'B') {
+Bishop::Bishop(bool isWhite) :Piece(isWhite, 'B') {
 }
-bool Bishop:: isValidMove(int startX, int startY, int endX, int endY) {
+bool Bishop::isValidMove(int startX, int startY, int endX, int endY, Piece* board[8][8]) {
 	int xdiff = abs(startX - endX);
 	int ydiff = abs(startY - endY);
 	if (xdiff == 0 && ydiff == 0) {
 		return false;
 	}
-	if (xdiff == ydiff) { 
-		return true; 
+	if (xdiff == ydiff) {
+		return true;
 	}
 	else {
 		return false;

@@ -1,8 +1,8 @@
 #pragma once
 #include "Piece.h"
 
-class Knight:public Piece{
+class Knight :public Piece {
 public:
-	Knight(char c);
-	bool isValidMove(int startX, int starY, int endX, int endY)override;
+	Knight(bool isWhite);
+	bool isValidMove(int startX, int starY, int endX, int endY, Piece* board[8][8])override;
 };

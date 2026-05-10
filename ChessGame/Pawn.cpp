@@ -1,21 +1,21 @@
 #include "Pawn.h"
 #include <cmath>
 
-Pawn::Pawn(char c) :Piece (c, 'P') {};
+Pawn::Pawn(bool isWhite) :Piece(isWhite, 'P') {};
 
-bool Pawn::isValidMove(int startX,int startY,int endX,int endY) {
-	if (startX == endX&&startY==endY) {
+bool Pawn::isValidMove(int startX, int startY, int endX, int endY, Piece* board[8][8]) {
+	if (startX == endX && startY == endY) {
 		return false;
 	}
-	int direction = (color == 'W') ?- 1:1;
-	int startingRow = (color == 'W') ? 6 : 1;
-	if (startY == endY && endX == startX + direction) {
+	int direction = (isWhite) ? -1 : 1;
+	int startingRow = (isWhite) ? 6 : 1;
+	if (startX == endX && endY == startY + direction) {
 		return true;
 	}
-	if (startY == endY && startX == startingRow && endX == startX + (2 * direction)) {//first turn logic
+	if (startX == endX && startY == startingRow && endY == startY + (2 * direction)) {//first turn logic
 		return true;
 	}
-	if (endX == startX && abs(startY - endY) == 1) {//killing logic
+	if (abs(startX - endX) == 1 && endY == startY + direction) {//killing logic
 		return true;
 	}
 	return false;
