@@ -99,6 +99,12 @@ bool Board::movePiece(int startX, int startY, int endX, int endY, bool isWhiteTu
 		cout << "not your turn" << endl;
 		return false;
 	}
+	if (grid[endY][endX] != nullptr && grid[endY][endX]->getIsWhite() == isWhiteTurn)
+	{
+		cout << "cannot capture your own piece" << endl;
+		return false;
+	}
+
 
 	// Ask Member 2 if the math/geometry is valid
 	if (grid[startY][startX]->isValidMove(startX, startY, endX, endY, grid))
